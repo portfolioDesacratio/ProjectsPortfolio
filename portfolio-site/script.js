@@ -305,30 +305,6 @@ console.log('%c Desacratio ', 'background: linear-gradient(135deg, #667eea, #764
 console.log('%c Пишу коды, для вас ', 'color: #667eea; font-size: 13px;');
 console.log('%c tg: @desacratio ', 'color: #764ba2; font-size: 13px;');
 
-// ========== SCROLL REVEAL (IntersectionObserver) ==========
-(function() {
-    const revealElements = document.querySelectorAll('.reveal');
-    if (!revealElements.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Добавляем небольшую рандомную задержку для каскада
-                const delay = Array.from(revealElements).indexOf(entry.target) % 10 * 50;
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, delay);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
-
-    revealElements.forEach(el => observer.observe(el));
-})();
-
 // ========== КНОПКА НАВЕРХ ==========
 (function() {
     const btn = document.getElementById('backToTop');

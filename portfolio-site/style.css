@@ -92,7 +92,7 @@ body {
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
-    transition: background 0.4s ease, color 0.3s ease;
+    transition: color 0.3s ease;
     min-height: 100vh;
     min-height: 100dvh;
     padding-top: var(--sat);
@@ -103,77 +103,39 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-color: #0a0a0f;
+}
+body[data-theme="light"] {
+    background-color: #f0f0f8;
 }
 
 /* Десктоп (>= 1024px) */
 @media (min-width: 1024px) {
     body {
-        background-image: url('assets/images/anime-bg-dark-desktop.jpg');
+        background-image: url('assets/images/anime-bg-dark-desktop.webp');
     }
     body[data-theme="light"] {
-        background-image: url('assets/images/anime-bg-light-desktop.jpg');
-    }
-    @supports (background-image: image-set(url('') 1x)) {
-        body {
-            background-image: image-set(
-                url('assets/images/anime-bg-dark-desktop.webp') 1x,
-                url('assets/images/anime-bg-dark-desktop.jpg') 1x
-            );
-        }
-        body[data-theme="light"] {
-            background-image: image-set(
-                url('assets/images/anime-bg-light-desktop.webp') 1x,
-                url('assets/images/anime-bg-light-desktop.jpg') 1x
-            );
-        }
+        background-image: url('assets/images/anime-bg-light-desktop.webp');
     }
 }
 
 /* Планшет (768px — 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
     body {
-        background-image: url('assets/images/anime-bg-dark-tablet.jpg');
+        background-image: url('assets/images/anime-bg-dark-tablet.webp');
     }
     body[data-theme="light"] {
-        background-image: url('assets/images/anime-bg-light-tablet.jpg');
-    }
-    @supports (background-image: image-set(url('') 1x)) {
-        body {
-            background-image: image-set(
-                url('assets/images/anime-bg-dark-tablet.webp') 1x,
-                url('assets/images/anime-bg-dark-tablet.jpg') 1x
-            );
-        }
-        body[data-theme="light"] {
-            background-image: image-set(
-                url('assets/images/anime-bg-light-tablet.webp') 1x,
-                url('assets/images/anime-bg-light-tablet.jpg') 1x
-            );
-        }
+        background-image: url('assets/images/anime-bg-light-tablet.webp');
     }
 }
 
 /* Телефон (< 768px) */
 @media (max-width: 767px) {
     body {
-        background-image: url('assets/images/anime-bg-dark-mobile.jpg');
+        background-image: url('assets/images/anime-bg-dark-mobile.webp');
     }
     body[data-theme="light"] {
-        background-image: url('assets/images/anime-bg-light-mobile.jpg');
-    }
-    @supports (background-image: image-set(url('') 1x)) {
-        body {
-            background-image: image-set(
-                url('assets/images/anime-bg-dark-mobile.webp') 1x,
-                url('assets/images/anime-bg-dark-mobile.jpg') 1x
-            );
-        }
-        body[data-theme="light"] {
-            background-image: image-set(
-                url('assets/images/anime-bg-light-mobile.webp') 1x,
-                url('assets/images/anime-bg-light-mobile.jpg') 1x
-            );
-        }
+        background-image: url('assets/images/anime-bg-light-mobile.webp');
     }
 }
 
@@ -865,52 +827,6 @@ body {
 .project-card:nth-child(4) { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.24s; opacity: 0; }
 .project-card:nth-child(5) { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.32s; opacity: 0; }
 .project-card:nth-child(6) { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.40s; opacity: 0; }
-
-/* ========== SCROLL REVEAL ========== */
-.reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-.reveal-left {
-    opacity: 0;
-    transform: translateX(-40px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal-left.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
-.reveal-right {
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal-right.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
-.reveal-scale {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal-scale.visible {
-    opacity: 1;
-    transform: scale(1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-left, .reveal-right, .reveal-scale {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
-}
 
 /* ========== КНОПКА НАВЕРХ ========== */
 .back-to-top {
