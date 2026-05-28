@@ -89,17 +89,92 @@ body[data-theme="light"] {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background 0.4s ease, color 0.3s ease;
     min-height: 100vh;
     min-height: 100dvh;
     padding-top: var(--sat);
     padding-right: var(--sar);
     padding-bottom: var(--sab);
     padding-left: var(--sal);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Десктоп (>= 1024px) */
+@media (min-width: 1024px) {
+    body {
+        background-image: url('assets/images/anime-bg-dark-desktop.jpg');
+    }
+    body[data-theme="light"] {
+        background-image: url('assets/images/anime-bg-light-desktop.jpg');
+    }
+    @supports (background-image: image-set(url('') 1x)) {
+        body {
+            background-image: image-set(
+                url('assets/images/anime-bg-dark-desktop.webp') 1x,
+                url('assets/images/anime-bg-dark-desktop.jpg') 1x
+            );
+        }
+        body[data-theme="light"] {
+            background-image: image-set(
+                url('assets/images/anime-bg-light-desktop.webp') 1x,
+                url('assets/images/anime-bg-light-desktop.jpg') 1x
+            );
+        }
+    }
+}
+
+/* Планшет (768px — 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    body {
+        background-image: url('assets/images/anime-bg-dark-tablet.jpg');
+    }
+    body[data-theme="light"] {
+        background-image: url('assets/images/anime-bg-light-tablet.jpg');
+    }
+    @supports (background-image: image-set(url('') 1x)) {
+        body {
+            background-image: image-set(
+                url('assets/images/anime-bg-dark-tablet.webp') 1x,
+                url('assets/images/anime-bg-dark-tablet.jpg') 1x
+            );
+        }
+        body[data-theme="light"] {
+            background-image: image-set(
+                url('assets/images/anime-bg-light-tablet.webp') 1x,
+                url('assets/images/anime-bg-light-tablet.jpg') 1x
+            );
+        }
+    }
+}
+
+/* Телефон (< 768px) */
+@media (max-width: 767px) {
+    body {
+        background-image: url('assets/images/anime-bg-dark-mobile.jpg');
+    }
+    body[data-theme="light"] {
+        background-image: url('assets/images/anime-bg-light-mobile.jpg');
+    }
+    @supports (background-image: image-set(url('') 1x)) {
+        body {
+            background-image: image-set(
+                url('assets/images/anime-bg-dark-mobile.webp') 1x,
+                url('assets/images/anime-bg-dark-mobile.jpg') 1x
+            );
+        }
+        body[data-theme="light"] {
+            background-image: image-set(
+                url('assets/images/anime-bg-light-mobile.webp') 1x,
+                url('assets/images/anime-bg-light-mobile.jpg') 1x
+            );
+        }
+    }
 }
 
 /* ===== СКРОЛЛБАР ===== */
@@ -790,6 +865,110 @@ body {
 .project-card:nth-child(4) { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.24s; opacity: 0; }
 .project-card:nth-child(5) { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.32s; opacity: 0; }
 .project-card:nth-child(6) { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.40s; opacity: 0; }
+
+/* ========== SCROLL REVEAL ========== */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+.reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+.reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* ========== КНОПКА НАВЕРХ ========== */
+.back-to-top {
+    position: fixed;
+    bottom: calc(30px + var(--sab, 0px));
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(102,126,234,0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+.back-to-top:hover {
+    box-shadow: 0 6px 30px rgba(102,126,234,0.5);
+    transform: translateY(-2px) scale(1.05);
+}
+.back-to-top:active {
+    transform: translateY(0) scale(0.95);
+}
+.back-to-top svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+@media (max-width: 480px) {
+    .back-to-top {
+        width: 42px;
+        height: 42px;
+        right: 16px;
+        bottom: calc(20px + var(--sab, 0px));
+        font-size: 18px;
+    }
+}
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
