@@ -17,6 +17,10 @@ build/
 *.swp
 *.swo
 
+# Virtual environment
+venv/
+.venv/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -24,3 +28,7 @@ Thumbs.db
 # Excel файлы (результаты парсера)
 *.xlsx
 *.csv
+
+# Сгенерированные файлы парсера
+news-parser/news_lenta_*.html
+news-parser/news_lenta_*.pdf

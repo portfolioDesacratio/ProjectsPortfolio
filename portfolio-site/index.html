@@ -2,38 +2,88 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моё портфолио | Программист</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f0f0f8" media="(prefers-color-scheme: light)">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Портфолио Desacratio — Telegram-боты, парсеры, сайты, скрипты автоматизации. Опыт 10+ проектов.">
+    <meta name="keywords" content="программист, разработчик, Python, JavaScript, Telegram-боты, парсинг, портфолио">
+    <meta name="author" content="Desacratio">
+    <meta name="robots" content="index, follow">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- iOS / Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Desacratio">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Windows / IE -->
+    <meta name="application-name" content="Desacratio">
+    <meta name="msapplication-TileColor" content="#0a0a0f">
+    <meta name="msapplication-TileImage" content="assets/icons/android-chrome-192x192.png">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Desacratio — пишу коды для вас">
+    <meta property="og:description" content="Telegram-боты, парсеры, сайты, скрипты автоматизации. 25+ проектов, 10+ заказчиков.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://portfolioDesacratio.github.io/">
+    <meta property="og:image" content="https://portfolioDesacratio.github.io/assets/images/og-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="ru_RU">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Desacratio — пишу коды для вас">
+    <meta name="twitter:description" content="Telegram-боты, парсеры, сайты, скрипты автоматизации. 25+ проектов, 10+ заказчиков.">
+    <meta name="twitter:image" content="https://portfolioDesacratio.github.io/assets/images/og-preview.jpg">
+
+    <!-- Preload -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" as="style">
+
+    <title>Desacratio | Пишу коды для вас</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- шапка сайта с меню -->
-    <nav class="navbar">
+    <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" role="navigation" aria-label="Основная навигация">
         <div class="container">
-            <div class="logo">&lt;Dev /&gt;</div>
-            <ul class="nav-links">
-                <li><a href="#about">Обо мне</a></li>
-                <li><a href="#projects">Проекты</a></li>
-                <li><a href="#skills">Навыки</a></li>
-                <li><a href="#contact">Контакты</a></li>
+            <div class="logo">~/<span class="highlight">desacratio</span></div>
+            <ul class="nav-links" id="navLinks" role="menubar">
+                <li role="none"><a href="#about" role="menuitem">Обо мне</a></li>
+                <li role="none"><a href="#projects" role="menuitem">Проекты</a></li>
+                <li role="none"><a href="#skills" role="menuitem">Навыки</a></li>
+                <li role="none"><a href="#contact" role="menuitem">Контакты</a></li>
             </ul>
-            <button class="burger" id="burgerBtn">
-                <span></span><span></span><span></span>
-            </button>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Сменить тему">🌙</button>
+                <button class="burger" id="burgerBtn" type="button" aria-label="Открыть меню" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- главный экран с приветствием -->
-    <section class="hero" id="about">
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="about" aria-label="Главный экран">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">Доступен для заказов</div>
-                <h1>Привет! Я <span class="highlight">программист</span></h1>
+                <div class="hero-badge">✦ Доступен для заказов</div>
+                <h1>Привет! Я <span class="highlight">Desacratio</span><br>и я пишу коды, для вас</h1>
                 <p class="hero-subtitle">
-                    Пишу Telegram-ботов, парсеры, сайты и скрипты автоматизации.
-                    Превращаю идеи в рабочий код.
+                    Telegram-боты, парсеры, сайты, скрипты автоматизации —
+                    превращаю идеи в рабочий код.
                 </p>
                 <div class="hero-stats">
                     <div class="stat">
@@ -62,9 +112,10 @@
                         <span class="dot green"></span>
                     </div>
                     <pre><code><span class="keyword">def</span> <span class="function">solve_problem</span>(task):
-    <span class="comment"># Твой код — моя работа</span>
-    solution = AI.assist(task)
-    <span class="keyword">return</span> optimize(solution)
+    <span class="comment"># пишу код руками</span>
+    code = write_code(task)
+    debug(code)
+    <span class="keyword">return</span> deploy(code)
 
 <span class="keyword">while</span> True:
     order = get_new_order()
@@ -76,62 +127,118 @@
         </div>
     </section>
 
-    <!-- мои работы -->
-    <section class="projects" id="projects">
+    <!-- ===== PROJECTS ===== -->
+    <section class="projects" id="projects" aria-label="Мои проекты">
         <div class="container">
             <h2 class="section-title">Мои <span class="highlight">проекты</span></h2>
             <p class="section-subtitle">Вот что я уже умею делать. Каждый проект — реально работающий код.</p>
             <div class="projects-grid">
+
+                <!-- 1. Telegram Bot Calculator -->
                 <div class="project-card">
                     <div class="project-icon">🤖</div>
                     <h3>Telegram-бот калькулятор</h3>
                     <p class="project-desc">
                         Интерактивный калькулятор в Telegram с кнопками, поддержкой
-                        сложных выражений и скобок. Работает 24/7.
+                        сложных выражений и скобок. Работает 24/7 на сервере.
                     </p>
                     <div class="project-tech">
                         <span>Python</span>
                         <span>aiogram</span>
                         <span>asyncio</span>
                     </div>
-                    <a href="https://github.com/tvoilogin/tg-calculator-bot" class="project-link" target="_blank">→ GitHub</a>
+                    <a href="https://github.com/portfolioDesacratio/ProjectsPortfolio/tree/main/telegram-bot-calculator" class="project-link" target="_blank" rel="noopener">→ GitHub</a>
                 </div>
 
+                <!-- 2. News Parser -->
                 <div class="project-card">
                     <div class="project-icon">📰</div>
                     <h3>Парсер новостей</h3>
                     <p class="project-desc">
                         Собирает заголовки и ссылки с Lenta.ru, сохраняет в Excel
-                        или CSV. Легко адаптируется под любой сайт.
+                        или CSV. Легко адаптируется под любой сайт. Авто-дедупликация.
                     </p>
                     <div class="project-tech">
                         <span>Python</span>
                         <span>BeautifulSoup</span>
                         <span>Pandas</span>
                     </div>
-                    <a href="https://github.com/tvoilogin/news-parser" class="project-link" target="_blank">→ GitHub</a>
+                    <a href="https://github.com/portfolioDesacratio/ProjectsPortfolio/tree/main/news-parser" class="project-link" target="_blank" rel="noopener">→ GitHub</a>
                 </div>
 
+                <!-- 3. Сайт-портфолио (этот сайт) -->
                 <div class="project-card">
                     <div class="project-icon">🌐</div>
                     <h3>Сайт-портфолио</h3>
                     <p class="project-desc">
-                        Этот сайт. Адаптивный дизайн, тёмная тема,
-                        анимации. Чистый HTML + CSS + JS.
+                        Адаптивный сайт с двумя темами, частицами, анимациями,
+                        PWA-поддержкой. Чистый HTML + CSS + JS без фреймворков.
                     </p>
                     <div class="project-tech">
                         <span>HTML</span>
                         <span>CSS</span>
                         <span>JavaScript</span>
                     </div>
-                    <a href="https://github.com/tvoilogin/portfolio" class="project-link" target="_blank">→ GitHub</a>
+                    <a href="https://github.com/portfolioDesacratio/ProjectsPortfolio/tree/main/portfolio-site" class="project-link" target="_blank" rel="noopener">→ GitHub</a>
                 </div>
+
+                <!-- 4. CyberDesacratio (Memorial) -->
+                <div class="project-card">
+                    <div class="project-icon">💀</div>
+                    <h3>CyberDesacratio</h3>
+                    <p class="project-desc">
+                        Личный сайт-мемориал с библиотекой знаний: 10 модулей,
+                        108 подмодулей по OSINT, пентестингу, Linux. WebP, PWA, адаптив.
+                    </p>
+                    <div class="project-tech">
+                        <span>HTML/CSS</span>
+                        <span>JavaScript</span>
+                        <span>WebP</span>
+                        <span>PWA</span>
+                    </div>
+                    <a href="https://github.com/portfolioDesacratio/memorialDesacratio" class="project-link" target="_blank" rel="noopener">→ GitHub</a>
+                </div>
+
+                <!-- 5. OSINT Forum -->
+                <div class="project-card">
+                    <div class="project-icon">💬</div>
+                    <h3>OSINT Forum</h3>
+                    <p class="project-desc">
+                        Веб-форум на Node.js + Express + SQLite. Регистрация,
+                        аутентификация, создание тем, теги, модерация. Деплой на Railway.
+                    </p>
+                    <div class="project-tech">
+                        <span>Node.js</span>
+                        <span>Express</span>
+                        <span>SQLite</span>
+                        <span>EJS</span>
+                    </div>
+                    <a href="https://github.com/portfolioDesacratio?tab=repositories" class="project-link" target="_blank" rel="noopener">→ GitHub</a>
+                </div>
+
+                <!-- 6. Скрипты и утилиты -->
+                <div class="project-card">
+                    <div class="project-icon">⚙️</div>
+                    <h3>Скрипты автоматизации</h3>
+                    <p class="project-desc">
+                        Набор Python-скриптов и bash-утилит для парсинга,
+                        деплоя, DevOps-задач и автоматизации рутинных операций.
+                    </p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Bash</span>
+                        <span>Docker</span>
+                        <span>Linux</span>
+                    </div>
+                    <a href="https://github.com/portfolioDesacratio?tab=repositories" class="project-link" target="_blank" rel="noopener">→ GitHub</a>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- что я умею -->
-    <section class="skills" id="skills">
+    <!-- ===== SKILLS ===== -->
+    <section class="skills" id="skills" aria-label="Мои навыки">
         <div class="container">
             <h2 class="section-title">Мои <span class="highlight">навыки</span></h2>
             <p class="section-subtitle">Инструменты и технологии, с которыми я работаю</p>
@@ -146,11 +253,15 @@
                 </div>
                 <div class="skill-item">
                     <div class="skill-icon">🌐</div>
-                    <span>HTML/CSS</span>
+                    <span>HTML / CSS</span>
                 </div>
                 <div class="skill-item">
                     <div class="skill-icon">⚡</div>
                     <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🟢</div>
+                    <span>Node.js</span>
                 </div>
                 <div class="skill-item">
                     <div class="skill-icon">📊</div>
@@ -165,51 +276,101 @@
                     <span>SQL / SQLite</span>
                 </div>
                 <div class="skill-item">
-                    <div class="skill-icon">🧠</div>
-                    <span>AI-кодинг</span>
+                    <div class="skill-icon">⚙️</div>
+                    <span>Автоматизация</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🐧</div>
+                    <span>Linux / Bash</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🐳</div>
+                    <span>Docker</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🛡️</div>
+                    <span>OSINT</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Контакты -->
-    <section class="contact" id="contact">
+    <!-- ===== CONTACT ===== -->
+    <section class="contact" id="contact" aria-label="Контакты">
         <div class="container">
             <h2 class="section-title">Свяжитесь <span class="highlight">со мной</span></h2>
-            <p class="section-subtitle">Готов обсудить ваш проект. Пишите в Telegram или на email.</p>
+            <p class="section-subtitle">Готов обсудить ваш проект. Пиши в любое время.</p>
             <div class="contact-links">
-                <a href="https://t.me/tvoi_login" class="contact-card" target="_blank">
+
+                <a href="https://t.me/desacratio" class="contact-card" target="_blank" rel="noopener">
                     <div class="contact-icon">✈️</div>
                     <div>
                         <strong>Telegram</strong>
-                        <span>@tvoi_login</span>
+                        <span>@desacratio</span>
                     </div>
                 </a>
-                <a href="mailto:example@email.com" class="contact-card" target="_blank">
+
+                <a href="mailto:aleksandrzaicev114@proton.me" class="contact-card" target="_blank" rel="noopener">
                     <div class="contact-icon">📧</div>
                     <div>
                         <strong>Email</strong>
-                        <span>example@email.com</span>
+                        <span>Proton Mail</span>
                     </div>
                 </a>
-                <a href="https://github.com/tvoilogin" class="contact-card" target="_blank">
+
+                <a href="https://github.com/portfolioDesacratio" class="contact-card" target="_blank" rel="noopener">
                     <div class="contact-icon">🐙</div>
                     <div>
                         <strong>GitHub</strong>
-                        <span>github.com/tvoilogin</span>
+                        <span>Все проекты</span>
                     </div>
                 </a>
+
+                <a href="https://osint-forum-production.up.railway.app/" class="contact-card" target="_blank" rel="noopener">
+                    <div class="contact-icon">💬</div>
+                    <div>
+                        <strong>OSINT FORUM</strong>
+                        <span>Форум сообщества</span>
+                    </div>
+                </a>
+
+                <a href="https://memorialDesacratio.github.io/" class="contact-card" target="_blank" rel="noopener">
+                    <div class="contact-icon">💀</div>
+                    <div>
+                        <strong>Мой Мемориал</strong>
+                        <span>База знаний OSINT & Cyber</span>
+                    </div>
+                </a>
+
             </div>
         </div>
     </section>
 
-    <!-- Футер -->
-    <footer class="footer">
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" role="contentinfo">
         <div class="container">
-            <p>&copy; 2026 — Сделано с ❤️ и 🤖</p>
+            <p>&copy; 2026 — Desacratio. Пишу коды, для вас.</p>
+            <p class="footer-motto">$ echo "In Cyberspace We Trust"</p>
         </div>
     </footer>
 
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="projectModal" role="dialog" aria-modal="true" aria-label="Детали проекта">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Проект</h2>
+                <button class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+    </script>
 </body>
 </html>

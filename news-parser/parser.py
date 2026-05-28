@@ -1,26 +1,26 @@
-# скрипт который собирает новости с ленты.ру
-# потом сохраняет в excel или csv
-# юзаю requests и bs4
+# парсер новостей с lenta.ru
+# собирает заголовки, выводит в консоль и сохраняет
+# форматы: html (красивый), pdf, xlsx, csv
 
 import os
 import sys
 import csv
 import logging
 from datetime import datetime
+from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# логи чтоб видеть процесс
+# логи
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
 )
 logger = logging.getLogger(__name__)
 
-
-# юзер-агент чтоб нас не заблокировали
+# чтоб нас не заблочили
 headers = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -31,11 +31,7 @@ headers = {
 
 
 def parse_news(max_pages=3):
-    """
-    парсит новости с ленты
-    max_pages - сколько страниц листать (1-5 норм)
-    возвращает список словарей с новостями
-    """
+    """парсим новости с ленты"""
     all_news = []
     base = "https://lenta.ru"
 
@@ -45,26 +41,21 @@ def parse_news(max_pages=3):
         else:
             url = f"{base}/parts/news/{page}/"
 
-        logger.info(f"качаю страницу {page}: {url}")
-
+        logger.info(f"качаю стр {page}: {url}")
         try:
             resp = requests.get(url, headers=headers, timeout=10)
             resp.raise_for_status()
         except Exception as e:
-            logger.error(f"не удалось загрузить {url}: {e}")
+            logger.error(f"не загрузилось {url}: {e}")
             continue
 
         soup = BeautifulSoup(resp.text, "html.parser")
 
-        # ищем все ссылки с новостями
-        # селекторы пришлось подбирать, лента неудобная
         items = soup.select("a._topnews, div.item, a.card-mini")
         if not items:
-            # если не нашел - пробуем другие варианты
             items = soup.find_all("a", class_=True)
 
         for item in items:
-            # вытаскиваем заголовок
             title = ""
             link = ""
 
@@ -72,7 +63,6 @@ def parse_news(max_pages=3):
                 title = item.get_text(strip=True)
                 link = item.get("href", "")
             else:
-                # внутри div ищем ссылку
                 a_tag = item.find("a")
                 if a_tag:
                     title = a_tag.get_text(strip=True)
@@ -80,30 +70,26 @@ def parse_news(max_pages=3):
                 else:
                     title = item.get_text(strip=True)
 
-            # пропускаем пустые или слишком короткие
             if not title or len(title) < 5:
                 continue
 
-            # делаем полную ссылку если относительная
             if link and not link.startswith("http"):
                 if link.startswith("/"):
                     link = base + link
                 else:
                     link = base + "/" + link
 
-            # пробуем найти время
             time_text = ""
             time_tag = item.find("time")
             if time_tag:
                 time_text = time_tag.get_text(strip=True)
             if not time_text:
-                time_tag = item.find("span", class_=lambda c: c and "time" in c.lower()) if hasattr(item, 'find') else None
-                if time_tag:
-                    time_text = time_tag.get_text(strip=True)
+                t = item.find("span", class_=lambda c: c and "time" in c.lower()) if hasattr(item, 'find') else None
+                if t:
+                    time_text = t.get_text(strip=True)
             if not time_text:
                 time_text = datetime.now().strftime("%H:%M")
 
-            # категория
             category = ""
             cat_tag = item.find("span", class_=lambda c: c and ("rubric" in c.lower() or "category" in c.lower())) if hasattr(item, 'find') else None
             if cat_tag:
@@ -118,7 +104,7 @@ def parse_news(max_pages=3):
                 "category": category,
             })
 
-        logger.info(f"после страницы {page} всего новостей: {len(all_news)}")
+        logger.info(f"после стр {page}: всего {len(all_news)}")
 
     # убираем дубликаты
     seen = set()
@@ -128,7 +114,7 @@ def parse_news(max_pages=3):
             seen.add(n["title"])
             unique.append(n)
 
-    logger.info(f"уникальных новостей: {len(unique)}")
+    logger.info(f"уникальных: {len(unique)}")
     return unique
 
 
@@ -141,7 +127,7 @@ def to_excel(news, filename=None):
     df = pd.DataFrame(news)
     df.columns = ["Заголовок", "Ссылка", "Время", "Категория"]
     df.to_excel(filename, index=False, engine="openpyxl")
-    print(f"сохранено в {filename}")
+    print(f"💾 сохранено: {filename}")
     return filename
 
 
@@ -156,48 +142,235 @@ def to_csv(news, filename=None):
         w.writeheader()
         w.writerows(news)
 
-    print(f"сохранено в {filename}")
+    print(f"💾 сохранено: {filename}")
     return filename
 
 
-def main():
-    print("парсер новостей lenta.ru v1.0")
-    print("=" * 35)
+def to_html(news, filename=None):
+    """сохраняем в красивый html файл"""
+    if not filename:
+        now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        filename = f"news_lenta_{now}.html"
+
+    # собираем строки новостей
+    rows_html = ""
+    for i, item in enumerate(news, 1):
+        rows_html += f"""
+        <tr>
+            <td class="num">{i}</td>
+            <td class="time">{item['time']}</td>
+            <td class="cat"><span class="tag">{item['category']}</span></td>
+            <td class="title"><a href="{item['link']}" target="_blank">{item['title']}</a></td>
+        </tr>"""
+
+    html = f"""<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Новости Lenta.ru — {datetime.now().strftime('%d.%m.%Y')}</title>
+<style>
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f1a;
+    color: #e0e0e0;
+    padding: 40px 20px;
+    min-height: 100vh;
+}}
+.container {{ max-width: 900px; margin: 0 auto; }}
+.header {{
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+}}
+.header h1 {{
+    font-size: 2rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}}
+.header p {{ color: #888; font-size: 0.95rem; }}
+.header .count {{
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 18px;
+    background: rgba(102,126,234,0.15);
+    color: #667eea;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}}
+table {{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}}
+thead th {{
+    text-align: left;
+    padding: 12px 16px;
+    color: #666;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}}
+tbody tr {{
+    background: #1a1a2e;
+    border-radius: 12px;
+    transition: all 0.2s;
+    cursor: pointer;
+}}
+tbody tr:hover {{
+    background: #1e1e36;
+    transform: translateX(4px);
+}}
+tbody td {{
+    padding: 14px 16px;
+    border: none;
+}}
+td.num {{
+    color: #444;
+    font-size: 0.85rem;
+    width: 40px;
+    font-weight: 600;
+}}
+td.time {{
+    color: #888;
+    font-size: 0.85rem;
+    width: 60px;
+    white-space: nowrap;
+}}
+td.cat {{ width: 100px; }}
+.tag {{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(102,126,234,0.1);
+    color: #667eea;
+    font-size: 0.75rem;
+    font-weight: 600;
+}}
+td.title a {{
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}}
+td.title a:hover {{ color: #667eea; }}
+.footer {{
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #444;
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📰 Новости Lenta.ru</h1>
+        <p>Собрано {datetime.now().strftime('%d.%m.%Y в %H:%M')}</p>
+        <div class="count">Найдено {len(news)} новостей</div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Время</th>
+                <th>Категория</th>
+                <th>Заголовок</th>
+            </tr>
+        </thead>
+        <tbody>
+            {rows_html}
+        </tbody>
+    </table>
+    <div class="footer">
+        Сгенерировано парсером новостей • lenta.ru
+    </div>
+</div>
+</body>
+</html>"""
+
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(html)
+
+    print(f"💾 сохранено: {filename}")
+    return filename
+
+
+def to_pdf(news, filename=None):
+    """сохраняем в pdf (сначала html, потом конвертим)"""
+    if not filename:
+        now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        filename = f"news_lenta_{now}.pdf"
+
+    # сначала создаём html
+    html_file = filename.replace(".pdf", ".html")
+    to_html(news, html_file)
 
     try:
-        pages = input("сколько страниц парсить? (1-5, нажми enter = 3): ")
-        if pages.strip() == "":
-            pages = 3
-        else:
-            pages = int(pages)
-            if pages < 1:
-                pages = 1
-            if pages > 5:
-                pages = 5
+        from weasyprint import HTML
+        HTML(filename=html_file).write_pdf(filename)
+        print(f"📄 сохранил PDF: {filename}")
+        # удаляем временный html
+        os.remove(html_file)
+        return filename
+    except Exception as e:
+        print(f"❌ не смог сделать PDF: {e}")
+        print(f"   но HTML остался: {html_file}")
+        return None
+
+
+def main():
+    print("📰 ПАРСЕР НОВОСТЕЙ LENTA.RU")
+    print("=" * 30)
+
+    try:
+        pages = input("сколько страниц? (1-5, enter = 3): ")
+        pages = int(pages) if pages.strip() else 3
+        pages = max(1, min(pages, 5))
     except:
         pages = 3
-        print("ну ок, будет 3 страницы")
 
     print(f"парсю {pages} стр...")
     news = parse_news(max_pages=pages)
 
     if not news:
-        print("ничего не нашел. может лента лежит или структуру поменяли")
+        print("ничего не нашел :(")
         return
 
     # показываем первые 5
     print(f"\nнашел {len(news)} новостей. первые 5:")
-    print("-" * 55)
+    print("-" * 60)
     for i, item in enumerate(news[:5], 1):
         print(f"{i}. {item['title']}")
-        print(f"   время: {item['time']} | категория: {item['category']}")
+        print(f"   🕒 {item['time']} | 📂 {item['category']}")
         print()
 
-    # сохраняем
-    choice = input("в каком формате сохранить? (xlsx/csv/enter = пропустить): ").strip().lower()
-    if choice == "xlsx":
+    # выбор формата
+    print("куда сохраняем?")
+    print("  1 — HTML (красивая страница)")
+    print("  2 — PDF")
+    print("  3 — Excel (xlsx)")
+    print("  4 — CSV")
+    print("  enter — ничего")
+    choice = input("выбери (1-4): ").strip()
+
+    if choice == "1":
+        to_html(news)
+    elif choice == "2":
+        to_pdf(news)
+    elif choice == "3":
         to_excel(news)
-    elif choice == "csv":
+    elif choice == "4":
         to_csv(news)
     else:
         print("ок, ничего не сохраняем")
