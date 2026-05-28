@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моё портфолио | Программист</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- шапка сайта с меню -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">&lt;Dev /&gt;</div>
+            <ul class="nav-links">
+                <li><a href="#about">Обо мне</a></li>
+                <li><a href="#projects">Проекты</a></li>
+                <li><a href="#skills">Навыки</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <button class="burger" id="burgerBtn">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- главный экран с приветствием -->
+    <section class="hero" id="about">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">Доступен для заказов</div>
+                <h1>Привет! Я <span class="highlight">программист</span></h1>
+                <p class="hero-subtitle">
+                    Пишу Telegram-ботов, парсеры, сайты и скрипты автоматизации.
+                    Превращаю идеи в рабочий код.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="projectsCount">0</span>
+                        <span class="stat-label">Проектов</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="clientsCount">0</span>
+                        <span class="stat-label">Заказчиков</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="linesCount">0</span>
+                        <span class="stat-label">Строк кода</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-primary">Заказать проект</a>
+                    <a href="#projects" class="btn btn-outline">Мои работы</a>
+                </div>
+            </div>
+            <div class="hero-code">
+                <div class="code-window">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <pre><code><span class="keyword">def</span> <span class="function">solve_problem</span>(task):
+    <span class="comment"># Твой код — моя работа</span>
+    solution = AI.assist(task)
+    <span class="keyword">return</span> optimize(solution)
+
+<span class="keyword">while</span> True:
+    order = get_new_order()
+    result = solve_problem(order)
+    deliver(result)
+    money += 1</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- мои работы -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2 class="section-title">Мои <span class="highlight">проекты</span></h2>
+            <p class="section-subtitle">Вот что я уже умею делать. Каждый проект — реально работающий код.</p>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">🤖</div>
+                    <h3>Telegram-бот калькулятор</h3>
+                    <p class="project-desc">
+                        Интерактивный калькулятор в Telegram с кнопками, поддержкой
+                        сложных выражений и скобок. Работает 24/7.
+                    </p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>aiogram</span>
+                        <span>asyncio</span>
+                    </div>
+                    <a href="https://github.com/tvoilogin/tg-calculator-bot" class="project-link" target="_blank">→ GitHub</a>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">📰</div>
+                    <h3>Парсер новостей</h3>
+                    <p class="project-desc">
+                        Собирает заголовки и ссылки с Lenta.ru, сохраняет в Excel
+                        или CSV. Легко адаптируется под любой сайт.
+                    </p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>BeautifulSoup</span>
+                        <span>Pandas</span>
+                    </div>
+                    <a href="https://github.com/tvoilogin/news-parser" class="project-link" target="_blank">→ GitHub</a>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">🌐</div>
+                    <h3>Сайт-портфолио</h3>
+                    <p class="project-desc">
+                        Этот сайт. Адаптивный дизайн, тёмная тема,
+                        анимации. Чистый HTML + CSS + JS.
+                    </p>
+                    <div class="project-tech">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                    </div>
+                    <a href="https://github.com/tvoilogin/portfolio" class="project-link" target="_blank">→ GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- что я умею -->
+    <section class="skills" id="skills">
+        <div class="container">
+            <h2 class="section-title">Мои <span class="highlight">навыки</span></h2>
+            <p class="section-subtitle">Инструменты и технологии, с которыми я работаю</p>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <div class="skill-icon">🐍</div>
+                    <span>Python</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🤖</div>
+                    <span>Telegram Bots</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🌐</div>
+                    <span>HTML/CSS</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">⚡</div>
+                    <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">📊</div>
+                    <span>Парсинг данных</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🐙</div>
+                    <span>Git / GitHub</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">💾</div>
+                    <span>SQL / SQLite</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🧠</div>
+                    <span>AI-кодинг</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Свяжитесь <span class="highlight">со мной</span></h2>
+            <p class="section-subtitle">Готов обсудить ваш проект. Пишите в Telegram или на email.</p>
+            <div class="contact-links">
+                <a href="https://t.me/tvoi_login" class="contact-card" target="_blank">
+                    <div class="contact-icon">✈️</div>
+                    <div>
+                        <strong>Telegram</strong>
+                        <span>@tvoi_login</span>
+                    </div>
+                </a>
+                <a href="mailto:example@email.com" class="contact-card" target="_blank">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <strong>Email</strong>
+                        <span>example@email.com</span>
+                    </div>
+                </a>
+                <a href="https://github.com/tvoilogin" class="contact-card" target="_blank">
+                    <div class="contact-icon">🐙</div>
+                    <div>
+                        <strong>GitHub</strong>
+                        <span>github.com/tvoilogin</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 — Сделано с ❤️ и 🤖</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
