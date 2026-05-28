@@ -1,27 +1,8 @@
-// Desacratio Portfolio — Service Worker
-const CACHE = 'desacratio-portfolio-v1';
-const STATIC_ASSETS = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/script.js',
-    '/manifest.json',
-    '/favicon.ico',
-    '/assets/icons/favicon.svg',
-    '/assets/icons/favicon-16x16.png',
-    '/assets/icons/favicon-32x32.png',
-    '/assets/icons/apple-touch-icon.png',
-    '/assets/icons/android-chrome-192x192.png',
-    '/assets/icons/android-chrome-512x512.png',
-];
+// Desacratio Portfolio — Service Worker (тихий режим)
+const CACHE = 'desacratio-portfolio-v2';
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', () => {
     self.skipWaiting();
-    event.waitUntil(
-        caches.open(CACHE).then((cache) => {
-            return cache.addAll(STATIC_ASSETS);
-        })
-    );
 });
 
 self.addEventListener('activate', (event) => {
@@ -36,15 +17,23 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    const { request } = event;
+    const url = new URL(request.url);
+    if (url.origin !== location.origin) return;
+
     if (
-        event.request.url.includes('fonts.googleapis.com') ||
-        event.request.url.includes('fonts.gstatic.com')
+        request.destination === 'style' ||
+        request.destination === 'script' ||
+        request.destination === 'font' ||
+        request.destination === 'image' ||
+        url.pathname === '/' ||
+        url.pathname === '/index.html'
     ) {
         event.respondWith(
-            caches.match(event.request).then((cached) => {
-                return cached || fetch(event.request).then((response) => {
+            caches.match(request).then((cached) => {
+                return cached || fetch(request).then((response) => {
                     const clone = response.clone();
-                    caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+                    caches.open(CACHE).then((cache) => cache.put(request, clone));
                     return response;
                 });
             })
@@ -53,19 +42,12 @@ self.addEventListener('fetch', (event) => {
     }
 
     event.respondWith(
-        fetch(event.request)
+        fetch(request)
             .then((response) => {
                 const clone = response.clone();
-                caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+                caches.open(CACHE).then((cache) => cache.put(request, clone));
                 return response;
             })
-            .catch(() => {
-                return caches.match(event.request).then((cached) => {
-                    if (!cached && event.request.mode === 'navigate') {
-                        return caches.match('/');
-                    }
-                    return cached;
-                });
-            })
+            .catch(() => caches.match(request))
     );
 });

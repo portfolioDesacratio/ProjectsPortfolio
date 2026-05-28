@@ -373,8 +373,9 @@
 
     <script src="script.js"></script>
     <script>
+    window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); });
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
+        navigator.serviceWorker.register('/sw.js').catch(function(){});
     }
     </script>
 </body>
