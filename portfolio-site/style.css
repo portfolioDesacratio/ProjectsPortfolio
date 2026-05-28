@@ -99,7 +99,6 @@ body {
     padding-right: var(--sar);
     padding-bottom: var(--sab);
     padding-left: var(--sal);
-    background-attachment: fixed;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -112,30 +111,30 @@ body[data-theme="light"] {
 /* Десктоп (>= 1024px) */
 @media (min-width: 1024px) {
     body {
-        background-image: url('assets/images/anime-bg-dark-desktop.webp');
+        background-image: url('assets/images/anime-bg-dark-desktop.jpg');
     }
     body[data-theme="light"] {
-        background-image: url('assets/images/anime-bg-light-desktop.webp');
+        background-image: url('assets/images/anime-bg-light-desktop.jpg');
     }
 }
 
 /* Планшет (768px — 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
     body {
-        background-image: url('assets/images/anime-bg-dark-tablet.webp');
+        background-image: url('assets/images/anime-bg-dark-tablet.jpg');
     }
     body[data-theme="light"] {
-        background-image: url('assets/images/anime-bg-light-tablet.webp');
+        background-image: url('assets/images/anime-bg-light-tablet.jpg');
     }
 }
 
 /* Телефон (< 768px) */
 @media (max-width: 767px) {
     body {
-        background-image: url('assets/images/anime-bg-dark-mobile.webp');
+        background-image: url('assets/images/anime-bg-dark-mobile.jpg');
     }
     body[data-theme="light"] {
-        background-image: url('assets/images/anime-bg-light-mobile.webp');
+        background-image: url('assets/images/anime-bg-light-mobile.jpg');
     }
 }
 

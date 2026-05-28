@@ -49,6 +49,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" as="style">
 
+    <!-- Отключаем PWA-установку -->
+    <script>window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();});</script>
+
     <title>Desacratio | Пишу коды для вас</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -373,7 +376,6 @@
 
     <script src="script.js"></script>
     <script>
-    window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); });
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function(){});
     }
